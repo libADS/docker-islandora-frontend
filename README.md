@@ -1,6 +1,8 @@
 Docker Islandora Frontend
 ================
 
+Looking for the [Quickstart](docs/QUICKSTART.md)? 
+
 Run Islandora on Ubuntu precise (php5.3 -- 5.4 ok?). Islandora and its modules are pulled locally and made available to the container, therefore development can happen directly on the development machine and changes will be reflected inside the container.
 
 Binary default versions:
