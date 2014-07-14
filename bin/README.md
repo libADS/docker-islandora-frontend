@@ -1,0 +1,3 @@
+Directory for frontend binaries.
+
+---

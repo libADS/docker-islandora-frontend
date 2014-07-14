@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+  DocumentRoot /var/www/drupal
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+  <Directory /var/www/drupal/>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    include /var/www/drupal/.htaccess
+  </Directory>
+
+  LogLevel warn
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  AllowEncodedSlashes On
+
+  # proxying may not be necessary -- can point to remote djatoka directly for paged content
+  ProxyPreserveHost On
+  ProxyRequests Off
+  ProxyPass /adore-djatoka/ http://!DJATOKA_HOST!:8888/ nocanon
+  ProxyPassReverse /adore-djatoka/ http://!DJATOKA_HOST!:8888/ nocanon
+</VirtualHost>

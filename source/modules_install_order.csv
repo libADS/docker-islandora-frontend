@@ -1,0 +1,55 @@
+php_lib
+islandora
+objective_forms
+# islandora_solr is the module name for the islandora_solr_search repo
+islandora_solr
+islandora_solr_views
+#~RYERSON~islandora_solr_metadata
+#~RYERSON~islandora_solr_facet_pages
+# xml_forms is the module name for the islandora_xml_forms repo
+xml_forms
+islandora_marcxml
+#~RYERSON~islandora_oai
+islandora_ocr
+islandora_batch
+#~RYERSON~islandora_bookmark
+islandora_fits
+islandora_importer
+#~RYERSON~islandora_jwplayer
+islandora_videojs
+#~RYERSON~islandora_scholar
+islandora_paged_content
+islandora_simple_workflow
+islandora_utils
+islandora_ip_embargo
+#~RYERSON~islandora_xacml_editor
+#~RYERSON~islandora_premis
+#~RYERSON~islandora_checksum
+#~RYERSON~islandora_checksum_checker
+# stripped solution_pack
+islandora_basic_collection
+islandora_pdf
+islandora_audio
+islandora_book
+islandora_compound_object
+islandora_basic_image
+islandora_large_image
+islandora_newspaper
+#~RYERSON~islandora_solution_pack_video
+#~RYERSON~islandora_solution_pack_web_archive
+islandora_book_batch
+#~RYERSON~islandora_image_annotation
+islandora_openseadragon
+islandora_internet_archive_bookreader
+
+# -libraries
+# -advanced_help
+# -imagemagick
+# -ctools
+# -token
+# -views
+# -jquery_update-7.x-2.x # use latest dev version for compatibility with JQuery 1.10
+# -relation # NB dependency for islandora_sync 
+# -field_collection # NB dependency for islandora_sync
+# -views_ui
+# -xmlsitemap # NB dependency for islandora_xmlsitemap
