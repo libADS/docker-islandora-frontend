@@ -72,3 +72,20 @@ Give it 30 seconds or so to initialize. Should be accessible via `localhost` or 
 - Times to initialize are based on desktop i5 8gb -- may need to be adjusted.
 
 ---
+
+Ultra-quick start (assumes pre-reqs are downloaded and containers built):
+
+```
+docker run -d -p 3306:3306 --name mysql -e MYSQL_PASS="admin" tutum/mysql
+docker run -d -p 8080:8080 --name fedora --link mysql:db dts/fedora:latest
+docker run -d -p 8888:8888 --name djatoka dts/djatoka:latest
+
+# AND
+docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source dts/islandora:latest
+
+# OR
+docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=davidson.lyrasistechnology.org" dts/islandora:latest
+
+# OR
+docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" dts/islandora:latest
+```
