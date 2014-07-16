@@ -5,6 +5,14 @@ Looking for the [Quickstart](docs/QUICKSTART.md)?
 
 Run Islandora on Ubuntu precise (php5.3 -- 5.4 ok?). Islandora and its modules are pulled locally and made available to the container, therefore development can happen directly on the development machine and changes will be reflected inside the container.
 
+**Note:** for development purposes for all sites:
+
+- `islandora_pids_allowed` is set to `islandora:`
+- `islandora_solr_namespace_restriction` is set to `islandora`
+- `site_frontpage` is set to `islandora/object/islandora:root`
+
+This allows for all sites to be used and invoked interchangeably.
+
 Binary default versions:
 -------------------------------
 
@@ -74,7 +82,7 @@ Overriding the site (can be used with any docker run invocation):
 
 ```
 docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" dts/islandora:latest /bin/bash
-./setup.sh &
+./setup.sh
 ```
 
 ---

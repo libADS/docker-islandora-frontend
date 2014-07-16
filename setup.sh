@@ -78,11 +78,12 @@ function setup_sites {
         drush -y -u 1 en feature_base_islandora
         drush -y -u 1 en feature_drupal_base
         drush -y -u 1 en $FEATURE_NAME
-
         drush -y -u 1 en $THEME_NAME
-        drush -y vset theme_default $THEME_NAME
-        # revert -- different results depending on where it happens around here ...
         drush -y -u 1 features-revert-all
+        # re-revert
+        drush -y vset islandora_pids_allowed "islandora:"
+        drush -y vset islandora_solr_namespace_restriction "islandora"
+        drush -y vset site_frontpage "islandora/object/islandora:root"
         cd
       fi
     fi
