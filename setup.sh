@@ -120,6 +120,11 @@ sed -i "s/!DRUPAL_USER!/$DRUPAL_USER/g" $DRUPAL_DEFAULT_PATH/settings.php
 sed -i "s/!DRUPAL_PASSWORD!/$DRUPAL_PASSWORD/g" $DRUPAL_DEFAULT_PATH/settings.php
 sed -i "s/!DJATOKA_HOST!/$DJATOKA_PORT_8888_TCP_ADDR/g" /etc/apache2/sites-available/islandora # may not need
 
+# PHP CONFIG
+sed -i "s/max_execution_time = 30/max_execution_time = 120/g" /etc/php5/apache2/php.ini
+sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 24M/g" /etc/php5/apache2/php.ini
+sed -i "s/post_max_size = 8M/post_max_size = 28M/g" /etc/php5/apache2/php.ini
+
 # LINK THEMES, MODULES, LIBRARIES
 link "libraries" $DRUPAL_LIBRARIES_PATH
 link "modules" $DRUPAL_MODULES_PATH
