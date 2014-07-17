@@ -70,6 +70,7 @@ ADD configuration/drupal/settings.php /settings.php
 ADD configuration/supervisor/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD configuration/supervisor/start-apache2.sh /start-apache2.sh
 ADD source/modules_install_order.csv /modules_install_order.csv
+ADD dts.sql /dts.sql
 ADD setup.sh /setup.sh
 
 RUN chmod u+x /*.sh
