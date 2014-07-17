@@ -1,7 +1,11 @@
 START TRANSACTION;
 
-INSERT INTO xml_forms (id,name,form) VALUES (
-1,'Digital Repository Metadata','<?xml version="1.0"?>
+-- There is no foreign key linking associations to a form but if there was we would need this order (or to cascade) ...
+DELETE FROM xml_form_builder_form_associations WHERE form_name = 'Digital Repository Metadata';
+DELETE FROM xml_forms WHERE name = 'Digital Repository Metadata';
+
+INSERT INTO xml_forms (name,form) VALUES (
+'Digital Repository Metadata','<?xml version="1.0"?>
 <definition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3">
   <properties>
     <root_name>mods</root_name>
@@ -2774,16 +2778,16 @@ INSERT INTO xml_forms (id,name,form) VALUES (
 );
 
 INSERT INTO xml_form_builder_form_associations
-(id,content_model,form_name,dsid,title_field,transform,self_transform)
+(content_model,form_name,dsid,title_field,transform,self_transform)
 VALUES 
-( 1,'islandora:bookCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 2,'islandora:sp_basic_image','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 3,'islandora:sp_pdf','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 4,'islandora:sp_large_image_cmodel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 5,'islandora:compoundCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 6,'islandora:newspaperCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 7,'islandora:newspaperIssueCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
-( 8,'islandora:sp-audioCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' )
+( 'islandora:bookCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:sp_basic_image','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:sp_pdf','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:sp_large_image_cmodel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:compoundCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:newspaperCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:newspaperIssueCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
+( 'islandora:sp-audioCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' )
 ;
 
 COMMIT;

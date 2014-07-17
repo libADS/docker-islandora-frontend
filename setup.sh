@@ -141,6 +141,8 @@ else
 fi
 
 # execute (dts specific) database statements
-mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD $DRUPAL_DB < /dts.sql
+for sql in /sql/*.sql; do
+  mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD $DRUPAL_DB < $sql
+done
 
 exec supervisord -n
