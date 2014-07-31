@@ -1,5 +1,8 @@
 START TRANSACTION;
 
+-- Clear these out so that inserts never trip up ... look safe to do this???
+DELETE FROM xml_form_builder_association_hooks WHERE id LIKE 'islandora_%_mods_form';
+
 -- There is no foreign key linking associations to a form but if there was we would need this order (or to cascade) ...
 DELETE FROM xml_form_builder_form_associations WHERE form_name = 'Digital Repository Metadata';
 DELETE FROM xml_forms WHERE name = 'Digital Repository Metadata';
@@ -2788,6 +2791,18 @@ VALUES
 ( 'islandora:newspaperCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
 ( 'islandora:newspaperIssueCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' ),
 ( 'islandora:sp-audioCModel','Digital Repository Metadata','MODS','a:2:{i:0;s:11:"TitleProper";i:1;s:5:"title";}','mods_to_dc.xsl','lyr_mods_cleanup.xsl' )
+;
+
+INSERT INTO xml_form_builder_association_hooks
+(id, enabled)
+VALUES
+('islandora_basic_image_mods_form', 0),
+('islandora_book_mods_form', 0),
+('islandora_compound_mods_form', 0),
+('islandora_large_image_mods_form', 0),
+('islandora_newspaper_issue_mods_form', 0),
+('islandora_newspaper_mods_form', 0),
+('islandora_pdf_mods_form', 0)
 ;
 
 COMMIT;
