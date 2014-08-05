@@ -24,6 +24,9 @@ function setup_islandora {
     drush -y site-install --site-name=$site_name --account-mail=$ISLANDORA_EMAIL --account-pass=$ISLANDORA_PASSWORD
   fi
 
+  # always make devel available
+  drush -y -u 1 en devel
+
   if [[ "$site_initialize" == true ]]; then
     drush -y vset islandora_base_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora
     drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr

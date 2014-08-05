@@ -1,4 +1,5 @@
 base,drupal,git@github.com:lyrasis/drupal.git,lyr-master
+modules,devel,git://git.drupal.org/project/devel.git,master
 modules,feature-base-drupal,https://github.com/lyrasis/feature_base_drupal,master
 modules,feature-base-islandora,git@github.com:lyrasis/feature-base-islandora.git,master
 modules,islandora,git@github.com:lyrasis/islandora.git,lyr-master
