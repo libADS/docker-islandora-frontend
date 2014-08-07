@@ -1,5 +1,7 @@
 #!/bin/bash
 
+FILE=${1:-production.csv}
+
 # SET WORKING DIRECTORY TO SCRIPT DIRECTORY
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
@@ -31,4 +33,4 @@ do
       git checkout $BRANCH
       cd $DIR
   fi
-done < "source.csv"
+done < $FILE

@@ -4,5 +4,6 @@
 *.zip
 source/*
 !source/get_repositories.sh
+!source/delete_repositories.sh
 !source/modules_install_order.csv
 !source/source.csv
