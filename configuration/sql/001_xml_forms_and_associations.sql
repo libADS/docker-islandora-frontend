@@ -515,7 +515,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                   <value>name</value>
                 </create>
                 <read>
-                  <path>mods:name[mods:role/mods:roleTerm ="creator"]</path>
+                  <path>mods:name[mods:role/mods:roleTerm =\'creator\']|mods:name[@usage="primary"]</path>
                   <context>parent</context>
                 </read>
                 <update>NULL</update>
@@ -568,6 +568,47 @@ INSERT INTO xml_forms (name,form) VALUES (
                 </properties>
                 <children/>
               </element>
+              <element name="usage">
+                <properties>
+                  <type>hidden</type>
+                  <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <default_value>primary</default_value>
+                  <description>Used to indicate name should be used as main entry</description>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
+                  <options>
+                    <primary>primary</primary>
+                    <index key=""/>
+                  </options>
+                  <required>FALSE</required>
+                  <resizable>FALSE</resizable>
+                  <title>Primary Name</title>
+                  <tree>TRUE</tree>
+                  <actions>
+                    <create>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                      <schema/>
+                      <type>attribute</type>
+                      <prefix>NULL</prefix>
+                      <value>usage</value>
+                    </create>
+                    <read>
+                      <path>@usage</path>
+                      <context>parent</context>
+                    </read>
+                    <update>
+                      <path>self::node()</path>
+                      <context>self</context>
+                    </update>
+                    <delete>NULL</delete>
+                  </actions>
+                </properties>
+                <children/>
+              </element>
               <element name="namePart">
                 <properties>
                   <type>textfield</type>
@@ -579,19 +620,19 @@ INSERT INTO xml_forms (name,form) VALUES (
                   <multiple>FALSE</multiple>
                   <required>FALSE</required>
                   <resizable>FALSE</resizable>
-                  <title>Creator\"s name</title>
+                  <title>Creator\'s name</title>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
                       <path>self::node()</path>
                       <context>parent</context>
                       <schema/>
-                      <type>xml</type>
+                      <type>element</type>
                       <prefix>NULL</prefix>
-                      <value>&lt;namePart&gt;%value%&lt;/namePart&gt;&lt;role&gt;&lt;roleTerm&gt;creator&lt;/roleTerm&gt;&lt;/role&gt;</value>
+                      <value>namePart</value>
                     </create>
                     <read>
-                      <path>mods:namePart[../mods:role/mods:roleTerm/text() = "creator"]</path>
+                      <path>mods:namePart</path>
                       <context>parent</context>
                     </read>
                     <update>
@@ -605,15 +646,17 @@ INSERT INTO xml_forms (name,form) VALUES (
               </element>
               <element name="creatorRole">
                 <properties>
-                  <type>markup</type>
+                  <type>textfield</type>
                   <access>TRUE</access>
                   <collapsed>FALSE</collapsed>
                   <collapsible>FALSE</collapsible>
+                  <description>Enter in textual form, e.g. "photographer", "author", etc.</description>
                   <disabled>FALSE</disabled>
                   <executes_submit_callback>FALSE</executes_submit_callback>
                   <multiple>FALSE</multiple>
                   <required>FALSE</required>
                   <resizable>FALSE</resizable>
+                  <title>Creator\'s Role</title>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -622,10 +665,10 @@ INSERT INTO xml_forms (name,form) VALUES (
                       <schema/>
                       <type>xml</type>
                       <prefix>NULL</prefix>
-                      <value>&lt;role&gt;&lt;roleTerm type="text"&gt;creator&lt;/roleTerm&gt;&lt;/role&gt;</value>
+                      <value>&lt;role&gt;&lt;roleTerm type="text"&gt;%value%&lt;/roleTerm&gt;&lt;/role&gt;</value>
                     </create>
                     <read>
-                      <path>mods:role/mods:roleTerm[text() = "creator"]</path>
+                      <path>mods:role/mods:roleTerm</path>
                       <context>parent</context>
                     </read>
                     <update>
@@ -688,7 +731,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                   <value>name</value>
                 </create>
                 <read>
-                  <path>mods:name[mods:role/mods:roleTerm != "creator"]|mods:name[not(mods:role)]</path>
+                  <path>mods:name[mods:role/mods:roleTerm != \'creator\']|mods:name[not(mods:role)]|mods:name[@usage != "primary"]</path>
                   <context>parent</context>
                 </read>
                 <update>NULL</update>
@@ -752,7 +795,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                   <multiple>FALSE</multiple>
                   <required>FALSE</required>
                   <resizable>FALSE</resizable>
-                  <title>Contributor\"s name</title>
+                  <title>Contributor\'s name</title>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -764,7 +807,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                       <value>namePart</value>
                     </create>
                     <read>
-                      <path>mods:namePart[not(../role)]|mods:namePart[../mods:role/mods:roleTerm/text() != "creator"]</path>
+                      <path>mods:namePart[not(../role)]|mods:namePart[../mods:role/mods:roleTerm/text() != \'creator\']</path>
                       <context>parent</context>
                     </read>
                     <update>
@@ -788,7 +831,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                   <multiple>FALSE</multiple>
                   <required>FALSE</required>
                   <resizable>FALSE</resizable>
-                  <title>Contributor\"s role</title>
+                  <title>Contributor\'s role</title>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -820,8 +863,14 @@ INSERT INTO xml_forms (name,form) VALUES (
         <properties>
           <type>fieldset</type>
           <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
           <description>Publication information</description>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
           <required>FALSE</required>
+          <resizable>FALSE</resizable>
           <tree>TRUE</tree>
         </properties>
         <children>
@@ -881,8 +930,14 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tags</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
               <description>An undifferentiated date associated with the resource.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <title>Date</title>
               <tree>TRUE</tree>
             </properties>
@@ -891,7 +946,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>tag</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -921,8 +982,14 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tags</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
               <description>The date the resource was copyrighted (single date).</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <title>Date Copyrighted</title>
               <tree>TRUE</tree>
             </properties>
@@ -931,7 +998,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>tag</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -961,8 +1034,14 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tags</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
               <description>The date of creation of the resource.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <title>Date Created</title>
               <tree>TRUE</tree>
             </properties>
@@ -971,7 +1050,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>tag</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -1001,8 +1086,14 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tags</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
               <description>Date of formal issuance (e.g., publication) of the resource.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <title>Date Issued</title>
               <tree>TRUE</tree>
             </properties>
@@ -1011,7 +1102,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>tag</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -1041,8 +1138,14 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tags</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
               <description>Date on which the resource was changed.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <title>Date Modified</title>
               <tree>TRUE</tree>
             </properties>
@@ -1051,7 +1154,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>tag</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -1081,8 +1190,14 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tags</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
               <description>Date (often a range) of validity of a resource.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <title>Date Valid</title>
               <tree>TRUE</tree>
             </properties>
@@ -1091,7 +1206,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>tag</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>
@@ -1123,8 +1244,14 @@ INSERT INTO xml_forms (name,form) VALUES (
         <properties>
           <type>tabs</type>
           <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
           <description>Includes, but is not limited to, an abstract, table of contents, or a free-text account of source resource.</description>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
           <required>FALSE</required>
+          <resizable>FALSE</resizable>
           <title>Description</title>
           <tree>TRUE</tree>
           <actions>
@@ -1175,7 +1302,13 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>textarea</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <tree>TRUE</tree>
                   <actions>
                     <create>NULL</create>
@@ -1199,26 +1332,125 @@ INSERT INTO xml_forms (name,form) VALUES (
           </element>
         </children>
       </element>
-      <element name="identifier">
+      <element name="notes">
         <properties>
-          <type>tags</type>
+          <type>tabs</type>
           <access>TRUE</access>
           <collapsed>FALSE</collapsed>
           <collapsible>FALSE</collapsible>
-          <description>A unique standard number or code that distinctively identifies the resource.  To indicate the type of identifier, preface the string with (type) e.g. (ISSN) 1234-5678.
-</description>
+          <description>General textual information relating to a resource.</description>
           <disabled>FALSE</disabled>
           <executes_submit_callback>FALSE</executes_submit_callback>
           <multiple>FALSE</multiple>
           <required>FALSE</required>
           <resizable>FALSE</resizable>
-          <title>Identifier</title>
+          <title>Notes</title>
           <tree>TRUE</tree>
+          <actions>
+            <create>NULL</create>
+            <read>
+              <path>/mods:mods</path>
+              <context>document</context>
+            </read>
+            <update>NULL</update>
+            <delete>NULL</delete>
+          </actions>
+        </properties>
+        <children>
+          <element name="notesPanel">
+            <properties>
+              <type>tabpanel</type>
+              <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
+              <required>FALSE</required>
+              <resizable>FALSE</resizable>
+              <tree>TRUE</tree>
+              <actions>
+                <create>
+                  <path>self::node()</path>
+                  <context>parent</context>
+                  <schema/>
+                  <type>element</type>
+                  <prefix>NULL</prefix>
+                  <value>note</value>
+                </create>
+                <read>
+                  <path>mods:note</path>
+                  <context>parent</context>
+                </read>
+                <update>
+                  <path>self::node()</path>
+                  <context>self</context>
+                </update>
+                <delete>NULL</delete>
+              </actions>
+            </properties>
+            <children>
+              <element name="0">
+                <properties>
+                  <type>textarea</type>
+                  <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
+                  <required>FALSE</required>
+                  <resizable>FALSE</resizable>
+                  <tree>TRUE</tree>
+                  <actions>
+                    <create>NULL</create>
+                    <read>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                    </read>
+                    <update>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                    </update>
+                    <delete>
+                      <path>self::node()</path>
+                      <context>self</context>
+                    </delete>
+                  </actions>
+                </properties>
+                <children/>
+              </element>
+            </children>
+          </element>
+        </children>
+      </element>
+      <element name="id">
+        <properties>
+          <type>tabs</type>
+          <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
+          <required>FALSE</required>
+          <resizable>FALSE</resizable>
+          <title>Identifiers</title>
+          <tree>TRUE</tree>
+          <actions>
+            <create>NULL</create>
+            <read>
+              <path>/mods:mods</path>
+              <context>document</context>
+            </read>
+            <update>NULL</update>
+            <delete>NULL</delete>
+          </actions>
         </properties>
         <children>
           <element name="0">
             <properties>
-              <type>tag</type>
+              <type>tabpanel</type>
               <access>TRUE</access>
               <collapsed>FALSE</collapsed>
               <collapsible>FALSE</collapsible>
@@ -1241,63 +1473,80 @@ INSERT INTO xml_forms (name,form) VALUES (
                   <path>mods:identifier</path>
                   <context>parent</context>
                 </read>
-                <update>
-                  <path>self::node()</path>
-                  <context>self</context>
-                </update>
-                <delete>NULL</delete>
-              </actions>
-            </properties>
-            <children/>
-          </element>
-        </children>
-      </element>
-      <element name="extent">
-        <properties>
-          <type>tags</type>
-          <access>TRUE</access>
-          <collapsed>FALSE</collapsed>
-          <collapsible>FALSE</collapsible>
-          <description>A statement of the number and specific material of the units of the resource.</description>
-          <disabled>FALSE</disabled>
-          <executes_submit_callback>FALSE</executes_submit_callback>
-          <multiple>FALSE</multiple>
-          <required>FALSE</required>
-          <resizable>FALSE</resizable>
-          <title>Extent</title>
-          <tree>TRUE</tree>
-        </properties>
-        <children>
-          <element name="0">
-            <properties>
-              <type>tag</type>
-              <access>TRUE</access>
-              <required>FALSE</required>
-              <tree>TRUE</tree>
-              <actions>
-                <create>
-                  <path>self::node()</path>
-                  <context>parent</context>
-                  <schema/>
-                  <type>xml</type>
-                  <prefix>NULL</prefix>
-                  <value>&lt;physicalDescription&gt;&lt;extent&gt;%value%&lt;/extent&gt;&lt;/physicalDescription&gt;</value>
-                </create>
-                <read>
-                  <path>mods:physicalDescription/mods:extent</path>
-                  <context>parent</context>
-                </read>
-                <update>
-                  <path>self::node()</path>
-                  <context>self</context>
-                </update>
+                <update>NULL</update>
                 <delete>
                   <path>self::node()</path>
                   <context>self</context>
                 </delete>
               </actions>
             </properties>
-            <children/>
+            <children>
+              <element name="type">
+                <properties>
+                  <type>textfield</type>
+                  <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <description>The type of identifier.  Suggested values include, but are not limited to, those specified in Standard Identifier Source Codes.  Use "IID" for local item identifier.</description>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
+                  <required>FALSE</required>
+                  <resizable>FALSE</resizable>
+                  <title>Type</title>
+                  <tree>TRUE</tree>
+                  <actions>
+                    <create>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                      <schema/>
+                      <type>attribute</type>
+                      <prefix>NULL</prefix>
+                      <value>type</value>
+                    </create>
+                    <read>
+                      <path>@type</path>
+                      <context>parent</context>
+                    </read>
+                    <update>
+                      <path>self::node()</path>
+                      <context>self</context>
+                    </update>
+                    <delete>NULL</delete>
+                  </actions>
+                </properties>
+                <children/>
+              </element>
+              <element name="identifier">
+                <properties>
+                  <type>textfield</type>
+                  <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <description>A unique standard number or code that distinctively identifies the resource.</description>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
+                  <required>FALSE</required>
+                  <resizable>FALSE</resizable>
+                  <title>Identifier</title>
+                  <tree>TRUE</tree>
+                  <actions>
+                    <create>NULL</create>
+                    <read>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                    </read>
+                    <update>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                    </update>
+                    <delete>NULL</delete>
+                  </actions>
+                </properties>
+                <children/>
+              </element>
+            </children>
           </element>
         </children>
       </element>
@@ -1465,8 +1714,14 @@ INSERT INTO xml_forms (name,form) VALUES (
         <properties>
           <type>tags</type>
           <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
           <description>Language(s) of source resource.  Use English name of language in http://www.loc.gov/standards/iso639-2/php/code_list.php.</description>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
           <required>FALSE</required>
+          <resizable>FALSE</resizable>
           <title>Language</title>
           <tree>TRUE</tree>
         </properties>
@@ -1475,7 +1730,13 @@ INSERT INTO xml_forms (name,form) VALUES (
             <properties>
               <type>tag</type>
               <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
               <required>FALSE</required>
+              <resizable>FALSE</resizable>
               <tree>TRUE</tree>
               <actions>
                 <create>
@@ -1730,7 +1991,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                           <value>&lt;detail type="volume"&gt;&lt;/detail&gt;</value>
                         </create>
                         <read>
-                          <path>mods:detail[@type="volume"]</path>
+                          <path>mods:detail[@type=\'volume\']</path>
                           <context>parent</context>
                         </read>
                         <update>NULL</update>
@@ -1834,7 +2095,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                           <value>&lt;detail type="number"&gt;&lt;/detail&gt;</value>
                         </create>
                         <read>
-                          <path>mods:detail[@type="number"]</path>
+                          <path>mods:detail[@type=\'number\']</path>
                           <context>parent</context>
                         </read>
                         <update>NULL</update>
@@ -1938,7 +2199,7 @@ INSERT INTO xml_forms (name,form) VALUES (
                           <value>&lt;extent unit="page"&gt;&lt;/extent&gt;</value>
                         </create>
                         <read>
-                          <path>mods:extent[@unit="page"]</path>
+                          <path>mods:extent[@unit=\'page\']</path>
                           <context>parent</context>
                         </read>
                         <update>NULL</update>
@@ -2451,32 +2712,203 @@ INSERT INTO xml_forms (name,form) VALUES (
           </element>
         </children>
       </element>
-      <element name="location">
+      <element name="subjectname">
         <properties>
-          <type>textfield</type>
+          <type>tabs</type>
           <access>TRUE</access>
           <collapsed>FALSE</collapsed>
           <collapsible>FALSE</collapsible>
-          <description>The name of the library responsible for the digital object.  For a digitized object, the library holding the source.</description>
+          <description>Entity responsible for making contributions to the source resource.</description>
           <disabled>FALSE</disabled>
           <executes_submit_callback>FALSE</executes_submit_callback>
           <multiple>FALSE</multiple>
-          <required>TRUE</required>
+          <required>FALSE</required>
           <resizable>FALSE</resizable>
-          <title>Holding library</title>
+          <title>Name as Subject</title>
+          <tree>TRUE</tree>
+          <actions>
+            <create>NULL</create>
+            <read>
+              <path>/mods:mods</path>
+              <context>document</context>
+            </read>
+            <update>NULL</update>
+            <delete>NULL</delete>
+          </actions>
+        </properties>
+        <children>
+          <element name="0">
+            <properties>
+              <type>tabpanel</type>
+              <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
+              <required>FALSE</required>
+              <resizable>FALSE</resizable>
+              <tree>TRUE</tree>
+              <actions>
+                <create>
+                  <path>self::node()</path>
+                  <context>parent</context>
+                  <schema/>
+                  <type>element</type>
+                  <prefix>NULL</prefix>
+                  <value>subject</value>
+                </create>
+                <read>
+                  <path>mods:subject/mods:name</path>
+                  <context>parent</context>
+                </read>
+                <update>NULL</update>
+                <delete>
+                  <path>self::node()</path>
+                  <context>self</context>
+                </delete>
+              </actions>
+            </properties>
+            <children>
+              <element name="subjNameField">
+                <properties>
+                  <type>fieldset</type>
+                  <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
+                  <required>FALSE</required>
+                  <resizable>FALSE</resizable>
+                  <title>Name</title>
+                  <tree>TRUE</tree>
+                  <actions>
+                    <create>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                      <schema/>
+                      <type>element</type>
+                      <prefix>NULL</prefix>
+                      <value>name</value>
+                    </create>
+                    <read>
+                      <path>mods:name</path>
+                      <context>parent</context>
+                    </read>
+                    <update>NULL</update>
+                    <delete>NULL</delete>
+                  </actions>
+                </properties>
+                <children>
+                  <element name="nameType">
+                    <properties>
+                      <type>select</type>
+                      <access>TRUE</access>
+                      <collapsed>FALSE</collapsed>
+                      <collapsible>FALSE</collapsible>
+                      <description>Personal, corporate, or conference</description>
+                      <disabled>FALSE</disabled>
+                      <executes_submit_callback>FALSE</executes_submit_callback>
+                      <multiple>FALSE</multiple>
+                      <options>
+                        <personal>personal</personal>
+                        <corporate>corporate</corporate>
+                        <conference>conference</conference>
+                        <index key="">not supplied</index>
+                      </options>
+                      <required>FALSE</required>
+                      <resizable>FALSE</resizable>
+                      <title>Type of name</title>
+                      <tree>TRUE</tree>
+                      <actions>
+                        <create>
+                          <path>self::node()</path>
+                          <context>parent</context>
+                          <schema/>
+                          <type>attribute</type>
+                          <prefix>NULL</prefix>
+                          <value>type</value>
+                        </create>
+                        <read>
+                          <path>@type</path>
+                          <context>parent</context>
+                        </read>
+                        <update>
+                          <path>self::node()</path>
+                          <context>self</context>
+                        </update>
+                        <delete>NULL</delete>
+                      </actions>
+                    </properties>
+                    <children/>
+                  </element>
+                  <element name="namePart">
+                    <properties>
+                      <type>textfield</type>
+                      <access>TRUE</access>
+                      <collapsed>FALSE</collapsed>
+                      <collapsible>FALSE</collapsible>
+                      <disabled>FALSE</disabled>
+                      <executes_submit_callback>FALSE</executes_submit_callback>
+                      <multiple>FALSE</multiple>
+                      <required>FALSE</required>
+                      <resizable>FALSE</resizable>
+                      <title>Name of subject</title>
+                      <tree>TRUE</tree>
+                      <actions>
+                        <create>
+                          <path>self::node()</path>
+                          <context>parent</context>
+                          <schema/>
+                          <type>element</type>
+                          <prefix>NULL</prefix>
+                          <value>namePart</value>
+                        </create>
+                        <read>
+                          <path>mods:namePart</path>
+                          <context>parent</context>
+                        </read>
+                        <update>
+                          <path>self::node()</path>
+                          <context>self</context>
+                        </update>
+                        <delete>NULL</delete>
+                      </actions>
+                    </properties>
+                    <children/>
+                  </element>
+                </children>
+              </element>
+            </children>
+          </element>
+        </children>
+      </element>
+      <element name="location">
+        <properties>
+          <type>fieldset</type>
+          <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
+          <required>FALSE</required>
+          <resizable>FALSE</resizable>
+          <title>Holding Information</title>
           <tree>TRUE</tree>
           <actions>
             <create>
-              <path>self::node()</path>
-              <context>parent</context>
+              <path>/mods:mods</path>
+              <context>document</context>
               <schema/>
-              <type>xml</type>
+              <type>element</type>
               <prefix>NULL</prefix>
-              <value>&lt;location&gt;&lt;physicalLocation&gt;%value%&lt;/physicalLocation&gt;&lt;/location&gt;</value>
+              <value>location</value>
             </create>
             <read>
-              <path>mods:location/mods:physicalLocation</path>
-              <context>parent</context>
+              <path>mods:location</path>
+              <context>document</context>
             </read>
             <update>
               <path>self::node()</path>
@@ -2485,13 +2917,228 @@ INSERT INTO xml_forms (name,form) VALUES (
             <delete>NULL</delete>
           </actions>
         </properties>
-        <children/>
+        <children>
+          <element name="physicalLocation">
+            <properties>
+              <type>textfield</type>
+              <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
+              <description>The institution or repository that holds the resource or where it is available.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
+              <required>TRUE</required>
+              <resizable>FALSE</resizable>
+              <title>Holding Library</title>
+              <tree>TRUE</tree>
+              <actions>
+                <create>
+                  <path>self::node()</path>
+                  <context>parent</context>
+                  <schema/>
+                  <type>element</type>
+                  <prefix>NULL</prefix>
+                  <value>physicalLocation</value>
+                </create>
+                <read>
+                  <path>mods:physicalLocation</path>
+                  <context>parent</context>
+                </read>
+                <update>
+                  <path>self::node()</path>
+                  <context>self</context>
+                </update>
+                <delete>NULL</delete>
+              </actions>
+            </properties>
+            <children/>
+          </element>
+          <element name="holdingSimple">
+            <properties>
+              <type>markup</type>
+              <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
+              <required>FALSE</required>
+              <resizable>FALSE</resizable>
+              <tree>TRUE</tree>
+              <actions>
+                <create>
+                  <path>self::node()</path>
+                  <context>parent</context>
+                  <schema/>
+                  <type>element</type>
+                  <prefix>NULL</prefix>
+                  <value>holdingSimple</value>
+                </create>
+                <read>
+                  <path>mods:holdingSimple</path>
+                  <context>parent</context>
+                </read>
+                <update>NULL</update>
+                <delete>NULL</delete>
+              </actions>
+            </properties>
+            <children>
+              <element name="copyInformation">
+                <properties>
+                  <type>markup</type>
+                  <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
+                  <required>FALSE</required>
+                  <resizable>FALSE</resizable>
+                  <tree>TRUE</tree>
+                  <actions>
+                    <create>
+                      <path>self::node()</path>
+                      <context>parent</context>
+                      <schema/>
+                      <type>element</type>
+                      <prefix>NULL</prefix>
+                      <value>copyInformation</value>
+                    </create>
+                    <read>
+                      <path>mods:copyInformation</path>
+                      <context>parent</context>
+                    </read>
+                    <update>NULL</update>
+                    <delete>NULL</delete>
+                  </actions>
+                </properties>
+                <children>
+                  <element name="Sublocation">
+                    <properties>
+                      <type>textfield</type>
+                      <access>TRUE</access>
+                      <collapsed>FALSE</collapsed>
+                      <collapsible>FALSE</collapsible>
+                      <description>The physical sublocation or collection / subcollection containing the item.  LYRASIS displays this with the label "Location".</description>
+                      <disabled>FALSE</disabled>
+                      <executes_submit_callback>FALSE</executes_submit_callback>
+                      <multiple>FALSE</multiple>
+                      <required>FALSE</required>
+                      <resizable>FALSE</resizable>
+                      <title>Sublocation</title>
+                      <tree>TRUE</tree>
+                      <actions>
+                        <create>
+                          <path>self::node()</path>
+                          <context>parent</context>
+                          <schema/>
+                          <type>element</type>
+                          <prefix>NULL</prefix>
+                          <value>subLocation</value>
+                        </create>
+                        <read>
+                          <path>mods:subLocation</path>
+                          <context>parent</context>
+                        </read>
+                        <update>
+                          <path>self::node()</path>
+                          <context>self</context>
+                        </update>
+                        <delete>NULL</delete>
+                      </actions>
+                    </properties>
+                    <children/>
+                  </element>
+                  <element name="shelfLocator">
+                    <properties>
+                      <type>textfield</type>
+                      <access>TRUE</access>
+                      <collapsed>FALSE</collapsed>
+                      <collapsible>FALSE</collapsible>
+                      <description>Shelfmark or other shelving designation that indicates the location identifier for a copy.</description>
+                      <disabled>FALSE</disabled>
+                      <executes_submit_callback>FALSE</executes_submit_callback>
+                      <multiple>FALSE</multiple>
+                      <required>FALSE</required>
+                      <resizable>FALSE</resizable>
+                      <title>Shelf Locator</title>
+                      <tree>TRUE</tree>
+                      <actions>
+                        <create>
+                          <path>self::node()</path>
+                          <context>parent</context>
+                          <schema/>
+                          <type>element</type>
+                          <prefix>NULL</prefix>
+                          <value>shelfLocator</value>
+                        </create>
+                        <read>
+                          <path>mods:shelfLocator</path>
+                          <context>parent</context>
+                        </read>
+                        <update>
+                          <path>self::node()</path>
+                          <context>self</context>
+                        </update>
+                        <delete>NULL</delete>
+                      </actions>
+                    </properties>
+                    <children/>
+                  </element>
+                </children>
+              </element>
+            </children>
+          </element>
+          <element name="URL">
+            <properties>
+              <type>textfield</type>
+              <access>TRUE</access>
+              <collapsed>FALSE</collapsed>
+              <collapsible>FALSE</collapsible>
+              <description>The URL of the resource.</description>
+              <disabled>FALSE</disabled>
+              <executes_submit_callback>FALSE</executes_submit_callback>
+              <multiple>FALSE</multiple>
+              <required>FALSE</required>
+              <resizable>FALSE</resizable>
+              <title>URL</title>
+              <tree>TRUE</tree>
+              <actions>
+                <create>
+                  <path>self::node()</path>
+                  <context>parent</context>
+                  <schema/>
+                  <type>element</type>
+                  <prefix>NULL</prefix>
+                  <value>url</value>
+                </create>
+                <read>
+                  <path>mods:url</path>
+                  <context>parent</context>
+                </read>
+                <update>
+                  <path>self::node()</path>
+                  <context>self</context>
+                </update>
+                <delete>NULL</delete>
+              </actions>
+            </properties>
+            <children/>
+          </element>
+        </children>
       </element>
       <element name="extensionAdmin">
         <properties>
           <type>fieldset</type>
           <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
           <required>FALSE</required>
+          <resizable>FALSE</resizable>
           <title>Administrative metadata</title>
           <tree>TRUE</tree>
           <actions>
@@ -2582,8 +3229,14 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>textfield</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
                   <description>Name of optical character recognition system used.</description>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <title>OCR</title>
                   <tree>TRUE</tree>
                   <actions>
@@ -2612,8 +3265,14 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>textfield</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
                   <description>The camera or scanner used to capture an image.</description>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <title>Capture device</title>
                   <tree>TRUE</tree>
                   <actions>
@@ -2642,8 +3301,14 @@ INSERT INTO xml_forms (name,form) VALUES (
                 <properties>
                   <type>textfield</type>
                   <access>TRUE</access>
+                  <collapsed>FALSE</collapsed>
+                  <collapsible>FALSE</collapsible>
                   <description>The person or organization that scanned the image.</description>
+                  <disabled>FALSE</disabled>
+                  <executes_submit_callback>FALSE</executes_submit_callback>
+                  <multiple>FALSE</multiple>
                   <required>FALSE</required>
+                  <resizable>FALSE</resizable>
                   <title>Capture operator</title>
                   <tree>TRUE</tree>
                   <actions>
@@ -2748,8 +3413,14 @@ INSERT INTO xml_forms (name,form) VALUES (
         <properties>
           <type>textfield</type>
           <access>TRUE</access>
+          <collapsed>FALSE</collapsed>
+          <collapsible>FALSE</collapsible>
           <description>The US state where the source of a reformatted object, or the born-digital file, is located.</description>
+          <disabled>FALSE</disabled>
+          <executes_submit_callback>FALSE</executes_submit_callback>
+          <multiple>FALSE</multiple>
           <required>FALSE</required>
+          <resizable>FALSE</resizable>
           <title>State located in</title>
           <tree>TRUE</tree>
           <actions>
