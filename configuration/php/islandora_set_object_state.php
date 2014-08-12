@@ -1,12 +1,15 @@
 <?php
 
 # php change_state.php -h http://localhost:8080/fedora -u fedora -p fedora -s I
+# -t/custom/path/to/tuque -- note, no whitespace allowed between flag and value
 
-$options = getopt("h:u:p:s:");
+$options = getopt("h:u:p:s:t::");
 list($fedora_url, $username, $password, $state) = array_values($options);
+$tuque = isset($options["t"]) ? $options["t"] : "/var/www/drupal/sites/all/libraries/tuque";
+if(! file_exists("$tuque/RepositoryConnection.php") ) throw new Exception('Path to Tuque is invalid.');
 
 # include all php files necessary for tuque
-foreach ( glob("/var/www/drupal/sites/all/libraries/tuque/*.php") as $filename) {
+foreach ( glob("$tuque/*.php") as $filename) {
   require_once($filename);
 }
 
