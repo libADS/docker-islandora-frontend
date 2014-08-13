@@ -21,9 +21,9 @@ do
   if [ -d "$SOURCE" ]
   then
       cd $SOURCE
+      git checkout $BRANCH
       echo "GIT PULLING $BRANCH FOR $NAME"
       git pull origin $BRANCH
-      git checkout $BRANCH
       cd $DIR
   else
       echo "GIT CLONING $NAME AND CHECKING OUT $BRANCH"
