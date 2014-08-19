@@ -30,17 +30,25 @@ try {
   $connection = new RepositoryConnection($fedora_url, $username, $password);
   $api = new FedoraApi($connection);
   $repository = new FedoraRepository($api, new simpleCache());
+} catch (Exception $e) {
+  echo $e->getMessage();
+  exit(1);
+}
 
-  # set state for default collections
-  foreach($pids as $pid) {
+# try to set state for default collections
+foreach($pids as $pid) {
+  try {
     $object = $repository->getObject($pid);
     if($object->state != $state) {
       $repository->api->m->modifyObject( $pid, array("state" => $state) );
     }
+  } catch (Exception $e) {
+    if($e->getMessage() != "Not Found") {
+      echo $e->getMessage();
+      exit(1);
+    }
+    // else move along
   }
-} catch (Exception $e) {
-  echo $e->getMessage();
-  exit(1);
 }
 
 exit(0);
