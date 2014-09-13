@@ -53,27 +53,27 @@ The `modules_install_order.csv` determines which source modules get installed (a
 Build:
 
 ```
-docker build -t dts/islandora:latest .
+docker build -t islandora/frontend:latest .
 ```
 
 Run:
 
 ```
-docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source dts/islandora:latest # foreground
-docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source dts/islandora:latest # background
+docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest # foreground
+docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest # background
 ```
 
 Run from within the container:
 
 ```
-docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source dts/islandora:latest /bin/bash
+docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest /bin/bash
 ./setup.sh &
 ```
 
 Overriding the site (can be used with any docker run invocation):
 
 ```
-docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" dts/islandora:latest /bin/bash
+docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" islandora/frontend:latest /bin/bash
 ./setup.sh
 ```
 
@@ -81,7 +81,7 @@ docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend
 
 ```
 # DEFAULT
-docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source dts/islandora:latest
+docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest
 ```
 
 ---
