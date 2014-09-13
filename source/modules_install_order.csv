@@ -1,12 +1,12 @@
 php_lib
 islandora
 objective_forms
-# islandora_solr is the module name for the islandora_solr_search repo
+#!ISLANDORA_SOLR =~ ISLANDORA_SOLR_SEARCH
 islandora_solr
 islandora_solr_views
 #~RYERSON~islandora_solr_metadata
 #~RYERSON~islandora_solr_facet_pages
-# xml_forms is the module name for the islandora_xml_forms repo
+#!XML_FORMS =~ ISLANDORA_XML_FORMS
 xml_forms
 islandora_marcxml
 #~RYERSON~islandora_oai
@@ -26,7 +26,7 @@ islandora_ip_embargo
 #~RYERSON~islandora_premis
 #~RYERSON~islandora_checksum
 #~RYERSON~islandora_checksum_checker
-# stripped solution_pack
+#!STRIPPED SOLUTION_PACK
 islandora_basic_collection
 islandora_pdf
 islandora_audio
