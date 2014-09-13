@@ -30,8 +30,6 @@ function setup_islandora {
   drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr
   drush -y vset islandora_paged_content_djatoka_url http://$DJATOKA_PORT_8888_TCP_ADDR:8888
   drush -y vset islandora_fits_executable_path $FITS_PATH/fits.sh
-  drush -y -u 1 en php_lib
-  drush -y -u 1 en islandora
 
   # install the modules
   while IFS=, read MODULE
