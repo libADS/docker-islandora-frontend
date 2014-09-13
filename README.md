@@ -82,12 +82,6 @@ docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend
 ```
 # DEFAULT
 docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source dts/islandora:latest
-
-# DAVIDSON
-docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=davidson.lyrasistechnology.org" dts/islandora:latest
-
-# UWF
-docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" dts/islandora:latest
 ```
 
 ---
