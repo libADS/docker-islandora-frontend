@@ -21,8 +21,8 @@ Requirements
 
 ```
 docker run -d -p 3306:3306 --name mysql -e MYSQL_PASS="admin" tutum/mysql
-docker run -d -p 8080:8080 --name fedora --link mysql:db dts/fedora:latest
-docker run -d -p 8888:8888 --name djatoka dts/djatoka:latest
+docker run -d -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest
+docker run -d -p 8888:8888 --name djatoka islandora/djatoka:latest
 ```
 
 Set the ENV path to the source directory:
