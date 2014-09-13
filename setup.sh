@@ -26,34 +26,29 @@ function setup_islandora {
 
   # always make devel available
   drush -y -u 1 en devel
+  drush -y vset islandora_base_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora
+  drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr
+  drush -y vset islandora_paged_content_djatoka_url http://$DJATOKA_PORT_8888_TCP_ADDR:8888
+  drush -y vset islandora_fits_executable_path $FITS_PATH/fits.sh
+  drush -y -u 1 en php_lib
+  drush -y -u 1 en islandora
 
-  if [[ "$site_initialize" == true ]]; then
-    drush -y vset islandora_base_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora
-    drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr
-    drush -y vset islandora_paged_content_djatoka_url http://$DJATOKA_PORT_8888_TCP_ADDR:8888
-    drush -y vset islandora_fits_executable_path $FITS_PATH/fits.sh
-    drush -y -u 1 en php_lib
-    drush -y -u 1 en islandora
-    
-    # install the modules like this only for the default site -- DTS sites will use feature_*
-    if [[ "$site_name" == "Islandora" ]]; then
-      while IFS=, read MODULE
-      do
-        if [[ "$MODULE" == "" || "$MODULE" =~ ^#.*$ ]]; then
-          continue
-        fi
-        drush -y -u 1 en $MODULE  
-      done < "/modules_install_order.csv"
+  # install the modules
+  while IFS=, read MODULE
+  do
+    if [[ "$MODULE" == "" || "$MODULE" =~ ^#.*$ ]]; then
+      continue
     fi
-  fi
+    drush -y -u 1 en $MODULE  
+  done < "/modules_install_order.csv"
   cd
 }
 
-# for additional (not default) sites, in synced source/sites/repository_sites directory
-# install the site if it matches $DRUPAL_SITE (this is DTS biased and would need to be tweaked for truly general re-use)
+# for additional (not default) sites, in synced source/sites directory
+# install the site if it matches $DRUPAL_SITE
 function setup_sites {
   echo "<?php" >> $DRUPAL_SITES_PATH/sites.php
-  for site in /source/sites/repository_sites/*; do
+  for site in /source/sites/*; do
     NAME=`basename $site`
     if [[ -d $site ]]; then
       mkdir $DRUPAL_SITES_PATH/$NAME
@@ -64,7 +59,6 @@ function setup_sites {
       ln -s $site/themes $DRUPAL_SITES_PATH/$NAME/themes
 
       if [[ "$NAME" == "$DRUPAL_SITE" ]]; then
-        setup_islandora $NAME $DRUPAL_SITES_PATH/$NAME true
         echo "\$sites['localhost'] = '$NAME';" >> $DRUPAL_SITES_PATH/sites.php
         echo "\$sites['dev.islandora.org'] = '$NAME';" >> $DRUPAL_SITES_PATH/sites.php
 
@@ -75,18 +69,8 @@ function setup_sites {
         THEME_NAME=`basename $THEME`
         
         cd $DRUPAL_SITES_PATH/$NAME
-        drush -y -u 1 dis toolbar
-        
-        # enable DTS modules in this context only
-        drush -y -u 1 en feature_base_islandora
-        drush -y -u 1 en feature_drupal_base
         drush -y -u 1 en $FEATURE_NAME
         drush -y -u 1 en $THEME_NAME
-        drush -y -u 1 features-revert-all
-        # re-revert
-        drush -y vset islandora_pids_allowed "islandora:"
-        drush -y vset islandora_solr_namespace_restriction "islandora"
-        drush -y vset site_frontpage "islandora/object/islandora:root"
         cd
       fi
     fi
@@ -137,18 +121,18 @@ ln -s $OPENSEADRAGON_PATH $DRUPAL_LIBRARIES_PATH/openseadragon
 ln -s $VIDEOJS_PATH $DRUPAL_LIBRARIES_PATH/video.js
 
 if [[ "default" == "$DRUPAL_SITE" ]]; then
-  setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH true
+  setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH
 else
-  setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH false
+  setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH
   setup_sites  
 fi
 
-# execute (dts specific) database statements
+# setup a mods xml form
 for sql in /sql/*.sql; do
   mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD $DRUPAL_DB < $sql
 done
 
-# hard-coded param values ALERT!
+# hard coded param alert! disable default collections
 php ./islandora_set_object_state.php -h http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora -u fedoraAdmin -p fedora -s I
 
 exec supervisord -n
