@@ -37,9 +37,7 @@ RUN pecl install uploadprogress
 RUN echo "extension=uploadprogress.so" > /etc/php5/apache2/conf.d/uploadprogress.ini
 
 # FITS
-ADD bin/fits-0.6.2.zip /fits-0.6.2.zip
 ADD bin/fits-0.8.0.zip /fits-0.8.0.zip
-RUN unzip fits-0.6.2.zip -d fits-0.6.2
 RUN unzip fits-0.8.0.zip -d fits-0.8.0
 RUN chown -R www-data:www-data $FITS_PATH
 RUN chmod a+x $FITS_PATH/fits.sh
@@ -58,7 +56,6 @@ RUN ln -s /opt/kakadu /usr/bin/kdu_compress
 # OPENSEADRAGON
 ADD bin/openseadragon-bin-0.9.129.zip /openseadragon-bin-0.9.129.zip
 RUN unzip /openseadragon-bin-0.9.129.zip -d openseadragon-bin-0.9.129
-ADD bin/openseadragon-bin-1c7f5839f90c28e97c96c169fdf23da24826605f.tar /openseadragon-1c7f58
 
 # VIDEOJS
 ADD bin/video-js-4.0.0.zip /video-js-4.0.0.zip
