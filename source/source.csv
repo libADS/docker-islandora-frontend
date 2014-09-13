@@ -1,7 +1,5 @@
 base,drupal,https://github.com/drupal/drupal.git,7.x
 modules,devel,git://git.drupal.org/project/devel.git,master
-modules,feature-base-drupal,git@github.com:Islandora/feature_base_drupal,7.x
-modules,feature-base-islandora,git@github.com:Islandora/feature-base-islandora.git,7.x
 modules,islandora,git@github.com:Islandora/islandora.git,7.x
 modules,islandora_batch,git@github.com:Islandora/islandora_batch.git,7.x
 modules,islandora_book_batch,git@github.com:Islandora/islandora_book_batch.git,7.x
@@ -16,7 +14,7 @@ modules,islandora_paged_content,git@github.com:Islandora/islandora_paged_content
 modules,islandora_simple_workflow,git@github.com:Islandora/islandora_simple_workflow.git,7.x
 modules,islandora_solr_search,git@github.com:Islandora/islandora_solr_search.git,7.x
 modules,islandora_solr_views,git@github.com:Islandora/islandora_solr_views.git,7.x
-modules,islandora_utils,git@github.com:Islandora/islandora_utils.git,7.x
+modules,islandora_utils,git@github.com:discoverygarden/islandora_utils.git,master
 modules,islandora_videojs,git@github.com:Islandora/islandora_videojs.git,7.x
 modules,islandora_xml_forms,git@github.com:Islandora/islandora_xml_forms.git,7.x
 modules,islandora_solution_pack_audio,git@github.com:Islandora/islandora_solution_pack_audio.git,7.x
@@ -29,5 +27,5 @@ modules,islandora_solution_pack_newspaper,git@github.com:Islandora/islandora_sol
 modules,islandora_solution_pack_pdf,git@github.com:Islandora/islandora_solution_pack_pdf.git,7.x
 modules,objective_forms,git@github.com:Islandora/objective_forms.git,7.x
 modules,php_lib,git@github.com:Islandora/php_lib.git,7.x
-libraries,bookreader,git@github.com:Islandora/internet_archive_bookreader,7.x
+libraries,bookreader,git@github.com:Islandora/internet_archive_bookreader,master
 libraries,tuque,git@github.com:Islandora/tuque.git,1.x
