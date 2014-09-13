@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE=${1:-production.csv}
+FILE=${1:-community.csv}
 
 # SET WORKING DIRECTORY TO SCRIPT DIRECTORY
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
