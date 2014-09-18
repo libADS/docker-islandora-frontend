@@ -23,7 +23,7 @@ islandora_paged_content
 islandora_simple_workflow
 islandora_utils
 islandora_ip_embargo
-#~RYERSON~islandora_xacml_editor
+islandora_xacml_editor
 #~RYERSON~islandora_premis
 #~RYERSON~islandora_checksum
 #~RYERSON~islandora_checksum_checker

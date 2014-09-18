@@ -17,6 +17,7 @@ modules,islandora_solr_search,git@github.com:Islandora/islandora_solr_search.git
 modules,islandora_solr_views,git@github.com:Islandora/islandora_solr_views.git,7.x
 modules,islandora_utils,git@github.com:discoverygarden/islandora_utils.git,master
 modules,islandora_videojs,git@github.com:Islandora/islandora_videojs.git,7.x
+modules,islandora_xacml_editor,git@github.com:Islandora/islandora_xacml_editor.git,7.x
 modules,islandora_xml_forms,git@github.com:Islandora/islandora_xml_forms.git,7.x
 modules,islandora_solution_pack_audio,git@github.com:Islandora/islandora_solution_pack_audio.git,7.x
 modules,islandora_solution_pack_book,git@github.com:Islandora/islandora_solution_pack_book.git,7.x
