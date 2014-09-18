@@ -10,7 +10,7 @@ islandora_solr_views
 #!XML_FORMS =~ ISLANDORA_XML_FORMS
 xml_forms
 islandora_marcxml
-#~RYERSON~islandora_oai
+islandora_oai
 islandora_ocr
 islandora_batch
 #~RYERSON~islandora_bookmark

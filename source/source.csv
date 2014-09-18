@@ -8,6 +8,7 @@ modules,islandora_importer,git@github.com:Islandora/islandora_importer.git,7.x
 modules,islandora_internet_archive_bookreader,git@github.com:Islandora/islandora_internet_archive_bookreader.git,7.x
 modules,islandora_ip_embargo,git@github.com:Islandora/islandora_ip_embargo.git,7.x
 modules,islandora_marcxml,git@github.com:Islandora/islandora_marcxml.git,7.x
+modules,islandora_oai,git@github.com:Islandora/islandora_oai.git,7.x
 modules,islandora_ocr,git@github.com:Islandora/islandora_ocr.git,7.x
 modules,islandora_openseadragon,git@github.com:Islandora/islandora_openseadragon.git,7.x
 modules,islandora_paged_content,git@github.com:Islandora/islandora_paged_content.git,7.x
