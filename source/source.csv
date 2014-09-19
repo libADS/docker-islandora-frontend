@@ -1,5 +1,4 @@
 base,drupal,https://github.com/drupal/drupal.git,7.x
-modules,devel,git://git.drupal.org/project/devel.git,master
 modules,islandora,git@github.com:Islandora/islandora.git,7.x
 modules,islandora_batch,git@github.com:Islandora/islandora_batch.git,7.x
 modules,islandora_book_batch,git@github.com:Islandora/islandora_book_batch.git,7.x
