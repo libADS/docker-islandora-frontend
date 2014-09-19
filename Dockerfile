@@ -51,7 +51,7 @@ RUN mv /opt/kakadu/libkdu_v73R.so /opt/kakadu/lib/libkdu_v73R.so
 RUN chmod a+x /opt/kakadu/kdu_*
 RUN echo "/opt/kakadu/lib" > /etc/ld.so.conf.d/kakadu.conf
 RUN ldconfig
-RUN ln -s /opt/kakadu /usr/bin/kdu_compress
+RUN ln -s /opt/kakadu/kdu_compress /usr/bin/kdu_compress
 
 # OPENSEADRAGON
 ADD bin/openseadragon-bin-0.9.129.zip /openseadragon-bin-0.9.129.zip
