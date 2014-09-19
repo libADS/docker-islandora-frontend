@@ -124,12 +124,4 @@ else
   setup_sites  
 fi
 
-# setup a mods xml form
-for sql in /sql/*.sql; do
-  mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD $DRUPAL_DB < $sql
-done
-
-# hard coded param alert! disable default collections
-php ./islandora_set_object_state.php -h http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora -u fedoraAdmin -p fedora -s I
-
 exec supervisord -n

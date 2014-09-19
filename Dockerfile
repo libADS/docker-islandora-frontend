@@ -62,12 +62,10 @@ ADD bin/video-js-4.0.0.zip /video-js-4.0.0.zip
 RUN unzip /video-js-4.0.0.zip -d video-js-4.0.0
 
 ADD configuration/php/drushrc.php /.composer/vendor/drush/drushrc.php
-ADD configuration/php/islandora_set_object_state.php /islandora_set_object_state.php
 ADD configuration/apache2/islandora /etc/apache2/sites-available/islandora
 ADD configuration/drupal/settings.php /settings.php
 ADD configuration/supervisor/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD configuration/supervisor/start-apache2.sh /start-apache2.sh
-ADD configuration/sql /sql
 ADD source/modules_install_order.csv /modules_install_order.csv
 ADD setup.sh /setup.sh
 
