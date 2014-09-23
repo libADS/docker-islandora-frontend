@@ -24,6 +24,7 @@ function setup_islandora {
     drush -y site-install --site-name=$site_name --account-mail=$ISLANDORA_EMAIL --account-pass=$ISLANDORA_PASSWORD
   fi
 
+  drush -y vset site_frontpage islandora/object/islandora:root
   drush -y vset islandora_base_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora
   drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr
   drush -y vset islandora_paged_content_djatoka_url http://$DJATOKA_PORT_8888_TCP_ADDR:8888
@@ -37,6 +38,9 @@ function setup_islandora {
     fi
     drush -y -u 1 en $MODULE  
   done < "/modules_install_order.csv"
+
+  drush -y role-add-perm 'anonymous user' 'view fedora repository objects'
+
   cd
 }
 
