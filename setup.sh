@@ -27,7 +27,7 @@ function setup_islandora {
   drush -y vset site_frontpage islandora/object/islandora:root
   drush -y vset islandora_base_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora
   drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr
-  drush -y vset islandora_paged_content_djatoka_url http://$DJATOKA_PORT_8888_TCP_ADDR:8888
+  drush -y vset islandora_paged_content_djatoka_url http://localhost:8888
   drush -y vset islandora_fits_executable_path $FITS_PATH/fits.sh
 
   # install the modules
@@ -106,7 +106,6 @@ sed -i "s/!MYSQL_HOST!/$DB_PORT_3306_TCP_ADDR/g" $DRUPAL_DEFAULT_PATH/settings.p
 sed -i "s/!DRUPAL_DB!/$DRUPAL_DB/g" $DRUPAL_DEFAULT_PATH/settings.php
 sed -i "s/!DRUPAL_USER!/$DRUPAL_USER/g" $DRUPAL_DEFAULT_PATH/settings.php
 sed -i "s/!DRUPAL_PASSWORD!/$DRUPAL_PASSWORD/g" $DRUPAL_DEFAULT_PATH/settings.php
-sed -i "s/!DJATOKA_HOST!/$DJATOKA_PORT_8888_TCP_ADDR/g" /etc/apache2/sites-available/islandora # may not need
 
 # PHP CONFIG
 sed -i "s/max_execution_time = 30/max_execution_time = 120/g" /etc/php5/apache2/php.ini
@@ -127,5 +126,10 @@ else
   setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH
   setup_sites  
 fi
+
+# DJATOKA
+cd /freelib-djatoka
+nohup mvn jetty:run-forked &
+cd
 
 exec supervisord -n

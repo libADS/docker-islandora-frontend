@@ -21,7 +21,7 @@ RUN add-apt-repository --yes ppa:lyrasis/precise-tools
 RUN add-apt-repository --yes ppa:lyrasis/precise-backports
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 curl libapache2-mod-php5 git imagemagick mysql-client supervisor unzip vim
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 curl libapache2-mod-php5 git imagemagick maven mysql-client openjdk-7-jdk supervisor unzip vim
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ffmpeg ffmpeg2theora graphicsmagick-imagemagick-compat
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install lame libavcodec-extra-53 libimage-exiftool-perl libmagickcore6 libmagickcore6-extra libjasper-dev libleptonica-dev libogg0 libopenjp27 libtheora0 libvorbis0a
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install bibutils ghostscript poppler-utils tesseract-ocr tesseract-ocr-eng
@@ -61,6 +61,10 @@ RUN unzip /openseadragon-bin-0.9.129.zip -d openseadragon-bin-0.9.129
 ADD bin/video-js-4.0.0.zip /video-js-4.0.0.zip
 RUN unzip /video-js-4.0.0.zip -d video-js-4.0.0
 
+# DJATOKA
+RUN git clone https://github.com/ksclarke/freelib-djatoka.git /freelib-djatoka
+RUN cd /freelib-djatoka && mvn -q install -DskipIntegrationTests -DskipUnitTests && cd
+
 ADD configuration/php/drushrc.php /.composer/vendor/drush/drushrc.php
 ADD configuration/apache2/islandora /etc/apache2/sites-available/islandora
 ADD configuration/drupal/settings.php /settings.php
@@ -76,6 +80,6 @@ RUN a2enmod proxy_http
 RUN a2dissite default
 RUN a2ensite islandora
 
-EXPOSE 80
+EXPOSE 80 8888
 
 CMD ["/setup.sh"]

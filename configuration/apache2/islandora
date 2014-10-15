@@ -19,6 +19,6 @@
   # proxying may not be necessary -- can point to remote djatoka directly for paged content
   ProxyPreserveHost On
   ProxyRequests Off
-  ProxyPass /adore-djatoka/ http://!DJATOKA_HOST!:8888/ nocanon
-  ProxyPassReverse /adore-djatoka/ http://!DJATOKA_HOST!:8888/ nocanon
+  ProxyPass /adore-djatoka/ http://localhost:8888/ nocanon
+  ProxyPassReverse /adore-djatoka/ http://localhost:8888/ nocanon
 </VirtualHost>

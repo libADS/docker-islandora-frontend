@@ -57,21 +57,18 @@ docker build -t islandora/frontend:latest .
 Run:
 
 ```
-docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest # foreground
-docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest # background
-```
+# foreground
+docker run -i -t -p 80:80 -p 8888:8888 --hostname=dev.islandora.org --name islandora --link mysql:db --link fedora:backend -v $ISLANDORA_SOURCE:/source islandora/frontend:latest
 
-Run from within the container:
+# background
+docker run -d -p 80:80 -p 8888:8888 --hostname=dev.islandora.org --name islandora --link mysql:db --link fedora:backend -v $ISLANDORA_SOURCE:/source islandora/frontend:latest
 
-```
-docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest /bin/bash
+# run from within the container
+docker run -i -t -p 80:80 -p 8888:8888 --hostname=dev.islandora.org --name islandora --link mysql:db --link fedora:backend -v $ISLANDORA_SOURCE:/source islandora/frontend:latest /bin/bash
 ./setup.sh &
-```
 
-Overriding the site (can be used with any docker run invocation):
-
-```
-docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" islandora/frontend:latest /bin/bash
+# overriding the site (can be used with any docker run invocation)
+docker run -i -t -p 80:80 -p 8888:8888 --hostname=dev.islandora.org --name islandora --link mysql:db --link fedora:backend -v $ISLANDORA_SOURCE:/source -e "DRUPAL_SITE=ir.uwf.edu" islandora/frontend:latest /bin/bash
 ./setup.sh
 ```
 
@@ -79,26 +76,7 @@ docker run -i -t -p 80:80 --name islandora --link mysql:db --link fedora:backend
 
 ```
 # DEFAULT
-docker run -d -p 80:80 --name islandora --link mysql:db --link fedora:backend --link djatoka:djatoka -v $ISLANDORA_SOURCE:/source islandora/frontend:latest
+docker run -d -p 80:80 -p 8888:8888 --hostname=dev.islandora.org --name islandora --link mysql:db --link fedora:backend -v $ISLANDORA_SOURCE:/source islandora/frontend:latest
 ```
-
----
-
-Djatoka considerations
-------------------------------
-
-For content that leverages Djatoka as a viewer (IA book reader, large image) Djatoka needs to be able to access the url of the content from Islandora. For example:
-
-```
-http://172.17.0.3:8888/resolver?rft_id=http%3A%2F%2Fdev.islandora.org%2Fislandora%2Fobject%2Fislandora%3A17%2Fdatastream%2FJP2%2Fview%3Ftoken%3D0f433453eea71f5509c51b2babb911118d2035d0c2f235fd9bbdf4ef88ca3b7d&url_ver=Z39.88-2004&svc_id=info%3Alanl-repo%2Fsvc%2FgetRegion&svc_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajpeg2000&svc.format=image%2Fpng&svc.level=4&svc.rotate=0
-```
-
-This is a problem in the sense that Docker does not support bi-directional container linking and `/etc/hosts` is read only without a ugly hack. Therefore if properly viewing the content is important then use the ip address of the Islandora container in the request:
-
-```
-http://172.17.0.5/islandora/object/islandora:15#page/1/mode/1up
-```
-
-Djatoka will then be able to do its thing.
 
 ---
