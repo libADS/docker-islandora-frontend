@@ -1,7 +1,9 @@
 Docker Islandora Frontend
 ================
 
-Run Islandora on Ubuntu precise (php5.3 -- 5.4 ok?). Islandora and its modules are pulled locally and made available to the container, therefore development can happen directly on the development machine and changes will be reflected inside the container.
+Run Islandora on Ubuntu precise (php5.3 -- 5.4 ok?). Islandora and its modules are pulled locally and made available to the container, therefore development can happen directly on the development machine and changes will be reflected inside the container. Djatoka is also installed inside the container -- that's not a hard requirement in a production stack but service discovery is needed in a Docker context to provide the Djatoka IP to the frontend and the frontend IP / hostname to Djatoka (Islandora needs to be accessible from Djatoka).
+
+**Linux compatible only until boot2docker provides support for volume sharing**
 
 Binary default versions:
 -------------------------------
@@ -14,13 +16,11 @@ Requirements
 ------------------
 
 - Access to a linked MySQL database aliased as **db** exposing **3306**. 
-- Access to a linked Fedora backend aliased as **backend** exposing **8080**. 
-- Access to a linked Djatoka instance aliased as **djatoka* exposing **8888**.
+- Access to a linked Fedora backend aliased as **backend** exposing **8080**.
 
 ```
 docker run -d -p 3306:3306 --name mysql -e MYSQL_PASS="admin" tutum/mysql
 docker run -d -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest
-docker run -d -p 8888:8888 --name djatoka islandora/djatoka:latest
 ```
 
 Set the ENV path to the source directory:
@@ -51,7 +51,7 @@ The `modules_install_order.csv` determines which source modules get installed (a
 Build:
 
 ```
-docker build -t islandora/frontend:latest .
+./build.sh
 ```
 
 Run:

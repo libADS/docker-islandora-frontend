@@ -5,7 +5,6 @@ ENV ADMIN_PASSWORD admin
 ENV DRUPAL_DB drupal
 ENV DRUPAL_USER drupal
 ENV DRUPAL_PASSWORD drupal
-ENV DRUPAL_SITE default
 ENV ISLANDORA_SITENAME Islandora
 ENV ISLANDORA_PASSWORD admin
 ENV ISLANDORA_EMAIL example@example.com
@@ -29,9 +28,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php5 php5-curl php5-gd php
 
 # PHP -- COMPOSER, DRUSH
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer global require drush/drush:6.*
+RUN cd /root && /usr/local/bin/composer global require drush/drush:6.*
 # double check this later
-RUN ln -s /.composer/vendor/bin/drush /usr/local/bin/drush
+RUN ln -s /root/.composer/vendor/bin/drush /usr/local/bin/drush
 
 RUN pecl install uploadprogress
 RUN echo "extension=uploadprogress.so" > /etc/php5/apache2/conf.d/uploadprogress.ini
@@ -63,9 +62,9 @@ RUN unzip /video-js-4.0.0.zip -d video-js-4.0.0
 
 # DJATOKA
 RUN git clone https://github.com/ksclarke/freelib-djatoka.git /freelib-djatoka
-RUN cd /freelib-djatoka && mvn -q install -DskipIntegrationTests -DskipUnitTests && cd
+RUN cd /freelib-djatoka && mvn -q install && cd
 
-ADD configuration/php/drushrc.php /.composer/vendor/drush/drushrc.php
+ADD configuration/php/drushrc.php /root/.composer/vendor/drush/drushrc.php
 ADD configuration/apache2/islandora /etc/apache2/sites-available/islandora
 ADD configuration/drupal/settings.php /settings.php
 ADD configuration/supervisor/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf

@@ -27,7 +27,7 @@ function setup_islandora {
   drush -y vset site_frontpage islandora/object/islandora:root
   drush -y vset islandora_base_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/fedora
   drush -y vset islandora_solr_url http://$BACKEND_PORT_8080_TCP_ADDR:8080/solr
-  drush -y vset islandora_paged_content_djatoka_url http://localhost:8888
+  drush -y vset islandora_paged_content_djatoka_url http://dev.islandora.org/adore-djatoka/
   drush -y vset islandora_fits_executable_path $FITS_PATH/fits.sh
 
   # install the modules
@@ -42,39 +42,6 @@ function setup_islandora {
   drush -y role-add-perm 'anonymous user' 'view fedora repository objects'
 
   cd
-}
-
-# for additional (not default) sites, in synced source/sites directory
-# install the site if it matches $DRUPAL_SITE
-function setup_sites {
-  echo "<?php" >> $DRUPAL_SITES_PATH/sites.php
-  for site in /source/sites/*; do
-    NAME=`basename $site`
-    if [[ -d $site ]]; then
-      mkdir $DRUPAL_SITES_PATH/$NAME
-      mkdir $DRUPAL_SITES_PATH/$NAME/files
-      chmod -R a+w $DRUPAL_SITES_PATH/$NAME/files
-      cp $DRUPAL_DEFAULT_PATH/settings.php $DRUPAL_SITES_PATH/$NAME
-      ln -s $site/modules $DRUPAL_SITES_PATH/$NAME/modules
-      ln -s $site/themes $DRUPAL_SITES_PATH/$NAME/themes
-
-      if [[ "$NAME" == "$DRUPAL_SITE" ]]; then
-        echo "\$sites['localhost'] = '$NAME';" >> $DRUPAL_SITES_PATH/sites.php
-        echo "\$sites['dev.islandora.org'] = '$NAME';" >> $DRUPAL_SITES_PATH/sites.php
-
-        # site specific features / themes etc.
-        FEATURE=$DRUPAL_SITES_PATH/$NAME/modules/*
-        FEATURE_NAME=`basename $FEATURE`
-        THEME=$DRUPAL_SITES_PATH/$NAME/themes/*
-        THEME_NAME=`basename $THEME`
-        
-        cd $DRUPAL_SITES_PATH/$NAME
-        drush -y -u 1 en $FEATURE_NAME
-        drush -y -u 1 en $THEME_NAME
-        cd
-      fi
-    fi
-  done
 }
 
 DRUPAL_PATH=/var/www/drupal
@@ -120,16 +87,17 @@ link "themes" $DRUPAL_THEMES_PATH
 ln -s $OPENSEADRAGON_PATH $DRUPAL_LIBRARIES_PATH/openseadragon
 ln -s $VIDEOJS_PATH $DRUPAL_LIBRARIES_PATH/video.js
 
-if [[ "default" == "$DRUPAL_SITE" ]]; then
-  setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH
-else
-  setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH
-  setup_sites  
-fi
+# INSTALL ISLANDORA
+setup_islandora "Islandora" $DRUPAL_DEFAULT_PATH
 
 # DJATOKA
 cd /freelib-djatoka
-nohup mvn jetty:run-forked &
+if ps aux | grep "[m]aven" > /dev/null
+then
+    echo "DJATOKA already started ..."
+else
+    nohup mvn jetty:run-forked &
+fi
 cd
 
 exec supervisord -n
